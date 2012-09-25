@@ -218,7 +218,7 @@ while k < numte:
 	valencete[int(vte / valstep)] += 1	#valence distribution
 	
 	k += 1
-
+Qte = fsum(coordnbte) / numte
 #
 # looping over O atoms
 #
@@ -258,24 +258,27 @@ while k < len(xxxall):
 			p += 1
 		n += 1
 	coordnbox[k] = nbneigh
+	print coordnbox
 	valox[k] = vox
 	valenceox[int(vox / valstep)] += 1	#valence distribution
 	k += 1
 
+Qox = fsum(coordnbox) / numox
 
 
-
-output = open('bondval', 'w')
+output = open('bondval_test', 'w')
 output.write('Bond valence distribution for Te:\n')
 for i in range(valbin):
 	output.write('%11f%8d\n' % (i * valstep, valencete[i]))
 output.write('\n')
+output.write('Average coordination number of Te atoms is %6f\n' % Qte)
 output.write('Bond valence distribution for O:\n')
 for i in range(valbin):
 	output.write('%11f%8d\n' % (i * valstep, valenceox[i]))
 output.write('\n')
+output.write('Average coordination number of O atoms is %6f\n' % Qox)
 output.close()
-output = open('angles', 'w')
+output = open('angles_test', 'w')
 output.write('O-Te-O angle distribution:\n')
 for i in range(nbbin):
 	output.write('%11f%8d\n' % (i * step, anglete[i]))
