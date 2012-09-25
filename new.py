@@ -169,56 +169,7 @@ for i in range(len(xxxall)):
 	redyyy[i] = (yyyall[i] + B / 2) / B
 	redzzz[i] = (zzzall[i] + C / 2) / C
 
-#
-# looping over Te atoms
-#
 
-k = 0
-coordnbte = numte * [0] # list of coordination number for Te
-valte = numte * [0] # list of valencies for Te
-while k < numte:
-	nbneigh = 0
-	vte = 0 # valence for each Te
-	l = numte
-	neighlist = numox * [0] # list of neighbours of Te
-	dist = numox * [0]
-	while l < len(xxxall):
-		r = vec(l, k)
-		dr = mod(r)
-		if dr < rcut:
-			# print 'r=', dr
-			neighlist[nbneigh] = l
-			dist[nbneigh] = dr # list of distances for neighbours
-			vte += exp((R0 - dr) / bbb) # calcutating valence
-			# print 'v=', vte
-			# print neighlist
-			# print dist
-			nbneigh += 1
-		l += 1		
-	n = 0
-	while n < nbneigh:
-		p = n + 1
-		while p < nbneigh:
-			r1 = vec(neighlist[n], k)
-			rrr1 = mod(r1)
-			r2 = vec(neighlist[p], k)
-			rrr2 = mod(r2)
-			# calculating cosine of O-Te-O angle
-			cosin = (r1[0] * r2[0] * A ** 2 + r1[1] * r2[1] * B ** 2 +
-			 r1[2] * r2[2] * C ** 2) / (rrr1 * rrr2)
-			# calculating O-Te-O angle
-			alpha = degrees(acos(cosin))
-			anglete[int(alpha / step)] += 1 # angle distribution
-			p += 1
-		n += 1
-	coordnbte[k] = nbneigh
-	valte[k] = vte
-	# print valte
-	# print int(vte / valstep), len(valencete)
-	valencete[int(vte / valstep)] += 1	#valence distribution
-	
-	k += 1
-Qte = fsum(coordnbte) / numte
 #
 # looping over O atoms
 #
@@ -258,13 +209,67 @@ while k < len(xxxall):
 			p += 1
 		n += 1
 	coordnbox[k] = nbneigh
-	print coordnbox
+	#print coordnbox
 	valox[k] = vox
 	valenceox[int(vox / valstep)] += 1	#valence distribution
 	k += 1
 
 Qox = fsum(coordnbox) / numox
+#
+# looping over Te atoms
+#
 
+k = 0
+coordnbte = numte * [0] # list of coordination number for Te
+valte = numte * [0] # list of valencies for Te
+while k < numte:
+	nbneigh = 0
+	vte = 0 # valence for each Te
+	l = numte
+	neighlist = numox * [0] # list of neighbours of Te
+	dist = numox * [0]
+	while l < len(xxxall):
+		r = vec(l, k)
+		dr = mod(r)
+		if dr < rcut:
+			# print 'r=', dr
+			neighlist[nbneigh] = l
+			dist[nbneigh] = dr # list of distances for neighbours
+			vte += exp((R0 - dr) / bbb) # calcutating valence
+			# print 'v=', vte
+			# print neighlist
+			# print dist
+			nbneigh += 1
+		q = coordnbox[l]
+		if q >= 2:
+			# q is briging oxygen
+			Qn = +1 # nomber of brigin O for Te current atom
+		l += 1	
+	Qmn[m][n] = (nbneigh, Qn) # Qmn unit for current atom
+	n = 0
+	while n < nbneigh:
+		p = n + 1
+		while p < nbneigh:
+			r1 = vec(neighlist[n], k)
+			rrr1 = mod(r1)
+			r2 = vec(neighlist[p], k)
+			rrr2 = mod(r2)
+			# calculating cosine of O-Te-O angle
+			cosin = (r1[0] * r2[0] * A ** 2 + r1[1] * r2[1] * B ** 2 +
+			 r1[2] * r2[2] * C ** 2) / (rrr1 * rrr2)
+			# calculating O-Te-O angle
+			alpha = degrees(acos(cosin))
+			anglete[int(alpha / step)] += 1 # angle distribution
+			p += 1
+		n += 1
+	coordnbte[k] = nbneigh
+	valte[k] = vte
+	# print valte
+	# print int(vte / valstep), len(valencete)
+	valencete[int(vte / valstep)] += 1	#valence distribution
+	
+	k += 1
+Qte = fsum(coordnbte) / numte
 
 output = open('bondval_test', 'w')
 output.write('Bond valence distribution for Te:\n')
