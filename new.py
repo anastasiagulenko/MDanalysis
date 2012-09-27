@@ -28,6 +28,10 @@ valenceox = valbin * [0] # distribution of O valence
 Qmn = [[0, 0, 0, 0, 0, 0, 0, 0] for i in range(8)]
 Qn = 0 # number of bridging O for Te current atom
 
+# The matrix for Qmn distribution in percents
+QQmn = [[0, 0, 0, 0, 0, 0, 0, 0] for i in range(8)]
+
+
 p = re.compile('\S')
 numat = 0 # list for counting number of atoms
 xxx = [] # list of exctracted coordinates x
@@ -269,6 +273,14 @@ while k < numte:
 	k += 1
 Qte = fsum(coordnbte) / numte
 
+# Convert Qmn distribution in percents
+
+for i in range(8):
+	for j in range(8):
+		QQmn[i][j] = (Qmn[i][j] / float(numte)) * 100
+
+
+
 output = open('bondval_test', 'w')
 output.write('Bond valence distribution for Te:\n')
 for i in range(valbin):
@@ -285,6 +297,16 @@ for j in range(8):
 	output.write('%3s%3d%4d%4d%4d%4d%4d%4d%4d%4d\n' % ('m =', j, 
 	Qmn[j][0], Qmn[j][1], Qmn[j][2], Qmn[j][3], Qmn[j][4], Qmn[j][5], 
 	Qmn[j][6], Qmn[j][7]))
+output.write('\n')
+output.write('Qmn units distribution in %\n')
+output.write('\n')
+output.write('%6s%10d%10d%10d%10d%10d%10d%10d%10d\n' % 
+('n =   ', 0, 1, 2, 3, 4, 5, 6, 7))
+output.write('\n')
+for j in range(8):
+	output.write('%3s%3d%10f%10f%10f%10f%10f%10f%10f%10f\n' % ('m =', j, 
+	QQmn[j][0], QQmn[j][1], QQmn[j][2], QQmn[j][3], QQmn[j][4], QQmn[j][5], 
+	QQmn[j][6], QQmn[j][7]))
 output.write('\n')
 output.write('Bond valence distribution for O:\n')
 for i in range(valbin):
