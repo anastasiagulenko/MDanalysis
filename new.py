@@ -7,7 +7,7 @@ m = 6 # unit cell multiplication (b)
 n = 4 # unit cell multiplication (c)
 a = b = c = 0 # unit cell parameters
 A = B = C = 0 # MD box parameters
-rcut = 3.0 # cutoff radius for bond valence
+rcut = 2.5 # cutoff radius for bond valence
 R0 = 1.977
 bbb = 0.37
 maxangle = 180
@@ -23,6 +23,10 @@ valbin = int(maxval / valstep)
 
 valencete = valbin * [0] # distribution of Te valence
 valenceox = valbin * [0] # distribution of O valence
+
+# The matrix for Qmn distribution
+Qmn = [[0, 0, 0, 0, 0, 0, 0, 0] for i in range(8)]
+Qn = 0 # number of bridging O for Te current atom
 
 p = re.compile('\S')
 numat = 0 # list for counting number of atoms
@@ -209,7 +213,6 @@ while k < len(xxxall):
 			p += 1
 		n += 1
 	coordnbox[k] = nbneigh
-	#print coordnbox
 	valox[k] = vox
 	valenceox[int(vox / valstep)] += 1	#valence distribution
 	k += 1
@@ -224,6 +227,7 @@ coordnbte = numte * [0] # list of coordination number for Te
 valte = numte * [0] # list of valencies for Te
 while k < numte:
 	nbneigh = 0
+	Qn = 0
 	vte = 0 # valence for each Te
 	l = numte
 	neighlist = numox * [0] # list of neighbours of Te
@@ -232,20 +236,16 @@ while k < numte:
 		r = vec(l, k)
 		dr = mod(r)
 		if dr < rcut:
-			# print 'r=', dr
 			neighlist[nbneigh] = l
 			dist[nbneigh] = dr # list of distances for neighbours
 			vte += exp((R0 - dr) / bbb) # calcutating valence
-			# print 'v=', vte
-			# print neighlist
-			# print dist
 			nbneigh += 1
-		q = coordnbox[l]
-		if q >= 2:
-			# q is briging oxygen
-			Qn = +1 # nomber of brigin O for Te current atom
+			q = coordnbox[l]
+			if q >= 2:
+				# q is bridging oxygen
+				Qn += 1 # number of bridging O for Te current atom
 		l += 1	
-	Qmn[m][n] = (nbneigh, Qn) # Qmn unit for current atom
+	Qmn[nbneigh][Qn] += 1 # Qmn distribution
 	n = 0
 	while n < nbneigh:
 		p = n + 1
@@ -264,8 +264,6 @@ while k < numte:
 		n += 1
 	coordnbte[k] = nbneigh
 	valte[k] = vte
-	# print valte
-	# print int(vte / valstep), len(valencete)
 	valencete[int(vte / valstep)] += 1	#valence distribution
 	
 	k += 1
@@ -277,6 +275,17 @@ for i in range(valbin):
 	output.write('%11f%8d\n' % (i * valstep, valencete[i]))
 output.write('\n')
 output.write('Average coordination number of Te atoms is %6f\n' % Qte)
+output.write('\n')
+output.write('Qmn units distribution\n')
+output.write('\n')
+output.write('%6s%4d%4d%4d%4d%4d%4d%4d%4d\n' % 
+('n =   ', 0, 1, 2, 3, 4, 5, 6, 7))
+output.write('\n')
+for j in range(8):
+	output.write('%3s%3d%4d%4d%4d%4d%4d%4d%4d%4d\n' % ('m =', j, 
+	Qmn[j][0], Qmn[j][1], Qmn[j][2], Qmn[j][3], Qmn[j][4], Qmn[j][5], 
+	Qmn[j][6], Qmn[j][7]))
+output.write('\n')
 output.write('Bond valence distribution for O:\n')
 for i in range(valbin):
 	output.write('%11f%8d\n' % (i * valstep, valenceox[i]))
