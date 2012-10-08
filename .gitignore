@@ -1,6 +1,8 @@
 *~
+RDFDAT
 REVCON
 angles_test
 bondval_test
 input.cfg
 *.pyc
+total_RDF.txt

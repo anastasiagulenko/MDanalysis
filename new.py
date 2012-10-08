@@ -25,11 +25,11 @@ valencete = valbin * [0] # distribution of Te valence
 valenceox = valbin * [0] # distribution of O valence
 
 # The matrix for Qmn distribution
-Qmn = [[0, 0, 0, 0, 0, 0, 0, 0] for i in range(8)]
+Qmn = [[0, 0, 0, 0, 0, 0, 0, 0,] for i in range(8)]
 Qn = 0 # number of bridging O for Te current atom
 
 # The matrix for Qmn distribution in percents
-QQmn = [[0, 0, 0, 0, 0, 0, 0, 0] for i in range(8)]
+QQmn = [[0, 0, 0, 0, 0, 0, 0, 0,] for i in range(8)]
 
 
 p = re.compile('\S')
