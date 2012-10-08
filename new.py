@@ -1,3 +1,10 @@
+# This is a program to calculate valence and angles distributions,
+# average coordination numbers for Te and O and Qmn units distribution
+# from configuration file, that was obtained with molecular dynamics softwear
+# DL_POLY and written in REVCON file.
+#
+# Anastasia Gulenko 09/2012 anastasia.gulenko@unilim.fr
+#
 import re
 
 atomtyp = ['Te', 'O']
@@ -140,7 +147,7 @@ ccc = A / B
 
 revcon.close()
 
-# counting the number of usful atoms
+# counting the number of useful atoms
 
 numte = count(0)
 numox = count(1)

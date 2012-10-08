@@ -25,8 +25,10 @@ cat[0] = 1./3.
 cat[1] = 2./3.
 fat[0] = 0.58 # neutron scattaring factor
 fat[1] = 0.58 # neutron scattaring factor
+cell = [[0, 0, 0] for i in range(3)]
 pi = 3.1415926535897932
 
+from coord_new import count
 
 #
 # consideration of doubling of data for atom pairs with i != j
@@ -46,7 +48,7 @@ def coeff(n, m):
 
 rdfdat = open('RDFDAT', 'r')
 # try to know how many lines of data I have for each pair in general case
-def count(i, j):
+def countr(i, j):
 	"""Counts the lines of the useful data.
 	
 	i, j = 0, len(atomtyp) - indexes of atoms.
@@ -67,7 +69,7 @@ def count(i, j):
 				nstr += 1
 	return nstr
 
-count(0, 0)
+countr(0, 0)
 rdfdat.close()			
 print 'Number of RDF points is ', nstr
 r = [0 for i in range(nstr)]
@@ -160,6 +162,57 @@ while np < nstr:
 	
 
 #
+# Calculating g(r)=4*pi*pho*(G(r)-1)
+#
+
+# counting the number of usful atoms
+
+numte = count(0)
+numox = count(1)
+numall = numte + numox
+
+#
+#  reading cell parameters
+#
+
+revcon = open('REVCON', 'r')
+revcon.readline()
+revcon.readline()
+i = 0
+while i < 3:
+	try:
+		lname = revcon.readline()
+		data = lname.split()
+		j = 0
+		while j < len(data):			
+			cell[j][i] += float(data[j])
+			j += 1	
+	except:
+		break
+	i += 1
+	
+# unit cell parameters
+
+A = cell[0][0]
+B = cell[1][1]
+C = cell[2][2]
+ccc = A / B
+
+revcon.close()
+
+# calculating density rho (atoms/angstom^3)
+
+rho = numall / (A * B * C)
+
+# Reduced RDF
+
+g = nstr * [0.0] # reduced RDF
+np = 0
+while np < nstr:
+	g[np] += 4 * pi * rho * r[np] * (totalrdf[np] - 1)
+	np += 1
+
+#
 # Writing RDF into the file	
 #
 
@@ -167,7 +220,13 @@ output = open('total_RDF.txt', 'w')
 output.write('%10s%10s%10s%10s%10s\n' % ('r', pairname[0], pairname[1], pairname[2], 'total'))
 for i in range(len(r)):
 	output.write('%10f%10f%10f%10f%10f\n' % (r[i], rdfdata[i][0], rdfdata[i][1], rdfdata[i][2], totalrdf[i]))
-
+output.write('\n')
+output.write('Reduced RDF:\n')
+output.write('\n')
+output.write('%10s%10s\n' % ('r', 'g(r)'))
+for i in range(len(r)):
+	output.write('%10f%10f\n' % (r[i], g[i]))
+output.write('\n')
 
 output.close()
 
