@@ -27,9 +27,11 @@ fat[0] = 0.58 # neutron scattaring factor
 fat[1] = 0.58 # neutron scattaring factor
 cell = [[0, 0, 0] for i in range(3)]
 pi = 3.1415926535897932
+Qbin = 0.02 # Bin value for wave vector
+Qnb = int((18 / Qbin)) # array size for wave vector
 
 from coord_new import count
-
+from math import sin
 #
 # consideration of doubling of data for atom pairs with i != j
 #
@@ -213,6 +215,21 @@ while np < nstr:
 	np += 1
 
 #
+# Calculating the stucture factor
+#
+
+S = Qnb * [0.0] # stucture factor
+Q = 0
+dr = r[1] - r[0]
+while Q < Qnb:
+	i = 0
+	while i < nstr:
+		S[Q] += g[i] * dr * sin((Q * Qbin) * r[i])
+		#print S[Q]
+		i += 1
+	Q += 1
+
+#
 # Writing RDF into the file	
 #
 
@@ -226,6 +243,12 @@ output.write('\n')
 output.write('%10s%10s\n' % ('r', 'g(r)'))
 for i in range(len(r)):
 	output.write('%10f%10f\n' % (r[i], g[i]))
+output.write('\n')
+output.write('Sructure factor:\n')
+output.write('\n')
+output.write('%10s%10s\n' % ('Q', 'S(Q)'))
+for i in range(Qnb):
+	output.write('%10f%10f\n' % (i * Qbin, S[i]))
 output.write('\n')
 
 output.close()
