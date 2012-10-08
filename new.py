@@ -9,9 +9,12 @@ import re
 
 atomtyp = ['Te', 'O']
 cell = [[0, 0, 0] for i in range(3)]
-l = 6 # unit cell multiplication (a)
-m = 6 # unit cell multiplication (b)
-n = 4 # unit cell multiplication (c)
+# print 'Input unit cell multiplication (a):'
+# l = int(raw_input()) # unit cell multiplication (a)
+# print 'Input unit cell multiplication (b):'
+# m = int(raw_input()) # unit cell multiplication (b)
+# print 'Input unit cell multiplication (c):'
+# n = int(raw_input()) # unit cell multiplication (c)
 a = b = c = 0 # unit cell parameters
 A = B = C = 0 # MD box parameters
 rcut = 2.5 # cutoff radius for bond valence
@@ -140,14 +143,14 @@ while i < 3:
 A = cell[0][0]
 B = cell[1][1]
 C = cell[2][2]
-a = A / l
-b = B / m
-c = C / n
+# a = A / l
+# b = B / m
+# c = C / n
 ccc = A / B
 
 revcon.close()
 
-# counting the number of useful atoms
+# counting the number of usful atoms
 
 numte = count(0)
 numox = count(1)

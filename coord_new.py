@@ -2,9 +2,12 @@ import re
 
 atomtyp = ['Te', 'O']
 cell = [[0, 0, 0] for i in range(3)]
-l = 6 # unit cell multiplication (a)
-m = 6 # unit cell multiplication (b)
-n = 4 # unit cell multiplication (c)
+# print 'Input unit cell multiplication (a):'
+# l = int(raw_input()) # unit cell multiplication (a)
+# print 'Input unit cell multiplication (b):'
+# m = int(raw_input()) # unit cell multiplication (b)
+# print 'Input unit cell multiplication (c):'
+# n = int(raw_input()) # unit cell multiplication (c)
 p = re.compile('\S')
 numat = [] # list for counting number of atoms
 xxx = [] # list of exctracted coordinates x
@@ -110,10 +113,10 @@ while i < 3:
 	
 # unit cell parameters
 	
-a = cell[0][0] / l
-b = cell[1][1] / m
-c = cell[2][2] / n
-ccc = cell[2][2] / cell[0][0]
+# a = cell[0][0] / l
+# b = cell[1][1] / m
+# c = cell[2][2] / n
+# ccc = cell[2][2] / cell[0][0]
 
 revcon.close()
 
