@@ -6,3 +6,11 @@ bondval_test
 input.cfg
 *.pyc
 total_RDF.txt
+CONTROL
+CONFIG
+FIELD
+OUTPUT
+STATIS
+REVIVE
+HISTORY
+temp
