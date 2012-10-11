@@ -2,7 +2,7 @@
 # 
 # Anastasia Gulenko anastasiya.gulenko@gmail.com
 
-import shlex, subprocess, shutil, os
+import shlex, subprocess, shutil, os, sys, fileinput
 
 # Launch DL_POLY
 
@@ -12,11 +12,16 @@ process = subprocess.Popen(args)
 
 # Move output files to other directory
 
-path_work = ''
+path_work = os.path.abspath('dlpoly_script.py')
 path_dst = '' + str(T) + 'K/'
 path_dst = "{}{}".format(T, 'K/')
 os.makedirs(path_dst)
-shutil.move(path_work, path_dst)
+output_files = os.listdir(path_work)
+for file_name in output_files:
+    full_file_name = os.path.join(path_work, file_name)
+    if (os.path.isfile(full_file_name)):
+        shutil.move(full_file_name, path_dst)
+
 
 # Archive HISTORY file
 
@@ -42,5 +47,16 @@ shutil.copy(path_REVC_w, path_CONF)
 
 # Change TEMPERATURE and TIME in CONTROL
 
-
+newline = 'temperature	{0:.3f}\n'.format(T)
+newline2 = 'steps  {0:10d}\n'.format(steps)
+lnum = 1
+for line in fileinput.FileInput("CONTROL",inplace=1):
+	if lnum == 3:
+		result = newline
+	elif lnum == 7:
+		result = newline2
+	else:
+		result = line
+	lnum += 1
+	sys.stdout.write(result)
 
