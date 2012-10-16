@@ -238,13 +238,15 @@ output.write('%10s%10s%10s%10s%10s\n' % ('r', pairname[0], pairname[1], pairname
 for i in range(len(r)):
 	output.write('%10f%10f%10f%10f%10f\n' % (r[i], rdfdata[i][0], rdfdata[i][1], rdfdata[i][2], totalrdf[i]))
 output.write('\n')
-output.write('Reduced RDF:\n')
+output.close()
+output = open('Reduced_RDF.txt', 'w')
 output.write('\n')
 output.write('%10s%10s\n' % ('r', 'g(r)'))
 for i in range(len(r)):
 	output.write('%10f%10f\n' % (r[i], g[i]))
 output.write('\n')
-output.write('Sructure factor:\n')
+output.close()
+output = open('Sructure factor.txt', 'w')
 output.write('\n')
 output.write('%10s%10s\n' % ('Q', 'S(Q)'))
 for i in range(Qnb):

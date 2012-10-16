@@ -1,11 +1,12 @@
 *~
 RDFDAT
 REVCON
-angles_test
-bondval_test
+angles
+bondval_O
+bondval_Te
 input.cfg
 *.pyc
-total_RDF.txt
+*.txt
 CONTROL
 CONFIG
 FIELD
@@ -14,3 +15,4 @@ STATIS
 REVIVE
 HISTORY
 temp
+Qmn_units

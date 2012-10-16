@@ -291,13 +291,15 @@ for i in range(8):
 
 
 
-output = open('bondval_test', 'w')
+output = open('bondval_Te', 'w')
 output.write('Bond valence distribution for Te:\n')
 for i in range(valbin):
 	output.write('%11f%8d\n' % (i * valstep, valencete[i]))
 output.write('\n')
 output.write('Average coordination number of Te atoms is %6f\n' % Qte)
 output.write('\n')
+output.close()
+output = open('Qmn_units', 'w')
 output.write('Qmn units distribution\n')
 output.write('\n')
 output.write('%6s%4d%4d%4d%4d%4d%4d%4d%4d\n' % 
@@ -318,13 +320,15 @@ for j in range(8):
 	QQmn[j][0], QQmn[j][1], QQmn[j][2], QQmn[j][3], QQmn[j][4], QQmn[j][5], 
 	QQmn[j][6], QQmn[j][7]))
 output.write('\n')
+output.close()
+output = open('bondval_O', 'w')
 output.write('Bond valence distribution for O:\n')
 for i in range(valbin):
 	output.write('%11f%8d\n' % (i * valstep, valenceox[i]))
 output.write('\n')
 output.write('Average coordination number of O atoms is %6f\n' % Qox)
 output.close()
-output = open('angles_test', 'w')
+output = open('angles', 'w')
 output.write('O-Te-O angle distribution:\n')
 for i in range(nbbin):
 	output.write('%11f%8d\n' % (i * step, anglete[i]))
