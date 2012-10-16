@@ -4,7 +4,11 @@
 
 import shlex, subprocess, shutil, os, sys, fileinput
 
+# sys.path.append('/home/anastasia/MDanalysis')
+
+
 # Set the number of steps in cycle
+
 cycle_name = raw_input('Input the name for MD cycle:\n')
 N = int(raw_input('Input the number of steps in the cycle:\n'))
 
@@ -26,6 +30,8 @@ while i < N:
 
 command_line = raw_input('Input the command to launch DL_POLY:\n')
 args = shlex.split(command_line)
+args1 = shlex.split('python /home/anastasia/MDanalysis/totalrdf_from_RDFDAT.py')
+args2 = shlex.split('python /home/anastasia/MDanalysis/revcon_analysis.py')
 path_work = os.getcwd() + '/'
 j = 0
 T = params.keys()[0]
@@ -45,6 +51,11 @@ for line in fileinput.FileInput("CONTROL",inplace=1):
 while j < N: 
 	process = subprocess.call(args)
 
+	# Analysis of REVCON and RDFDAT files
+
+	process1 = subprocess.call(args1)
+	process2 = subprocess.call(args2)
+		
 	# Move output files to other directory
 
 	path_dst = '/home/anastasia/MD_data/{}/{}{}'.format(cycle_name, params.keys()[j], 'K/')
@@ -56,8 +67,6 @@ while j < N:
 			pass
 		elif (os.path.isfile(full_file_name)):
 			shutil.move(full_file_name, path_dst)
-
-	import totalrdf_from_RDFDAT, revcon_analysis
 
 
 	# Archive HISTORY file
@@ -78,7 +87,7 @@ while j < N:
 	shutil.copy(path_FIEL, path_work)
 	shutil.copy(path_REVC, path_work)
 
-	# Remane REVCON to CONFIG
+	# Rename REVCON to CONFIG
 
 	shutil.move(path_REVC_w, path_CONF)
 

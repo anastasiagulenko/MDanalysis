@@ -5,6 +5,7 @@
 #
 # Anastasia Gulenko 09/2012 anastasia.gulenko@unilim.fr
 #
+#!/usr/bin/env python
 import re
 
 

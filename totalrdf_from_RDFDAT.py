@@ -4,7 +4,7 @@
 #
 # Anastasia Gulenko 06/2012 anastasia.gulenko@unilim.fr
 #
-
+#!/usr/bin/env python
 import re
 
 atomtyp = ['Te', 'O']
