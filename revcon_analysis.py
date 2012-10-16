@@ -7,6 +7,7 @@
 #
 import re
 
+
 atomtyp = ['Te', 'O']
 cell = [[0, 0, 0] for i in range(3)]
 # print 'Input unit cell multiplication (a):'
@@ -338,3 +339,6 @@ for i in range(nbbin):
 	output.write('%11f%8d\n' % (i * step, angleox[i]))
 output.write('\n')
 output.close()
+
+if __name__ == "__main__":
+    import sys

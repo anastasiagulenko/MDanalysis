@@ -57,6 +57,8 @@ while j < N:
 		elif (os.path.isfile(full_file_name)):
 			shutil.move(full_file_name, path_dst)
 
+	import totalrdf_from_RDFDAT, revcon_analysis
+
 
 	# Archive HISTORY file
 

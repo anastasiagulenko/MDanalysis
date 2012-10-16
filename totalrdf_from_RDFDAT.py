@@ -255,3 +255,5 @@ output.write('\n')
 
 output.close()
 
+if __name__ == "__main__":
+    import sys
