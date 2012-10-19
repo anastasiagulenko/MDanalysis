@@ -29,7 +29,7 @@ nbbin = int(maxangle / step)
 anglete = nbbin * [0] # distribution of angles O-Te-O
 angleox = nbbin * [0] # distribution of angles Te-O-Te
 
-maxval = 6.0
+maxval = 7.0
 valstep = 0.1
 valbin = int(maxval / valstep)
 

@@ -14,7 +14,7 @@ N = int(raw_input('Input the number of steps in the cycle:\n'))
 
 # Set the temperature and simulation time for each step
 
-params = {} # dictionary for temperature:steps pair
+params = [[0, 0] for i in range(N)] # dictionary for temperature:steps pair
 print 'Input temperature and number of steps for each MD run in "T S" format'
 
 i = 0
@@ -23,7 +23,8 @@ while i < N:
 	datain = data.split()
 	key = datain[0] # Temepature is a key
 	value = int(datain[1]) # Number of steps is a value
-	params[key] = value
+	params[i][0] = key
+	params[i][1] = value
 	i += 1
 
 # Launch DL_POLY
@@ -34,9 +35,10 @@ args1 = shlex.split('python /home/anastasia/MDanalysis/totalrdf_from_RDFDAT.py')
 args2 = shlex.split('python /home/anastasia/MDanalysis/revcon_analysis.py')
 path_work = os.getcwd() + '/'
 j = 0
-T = params.keys()[0]
+T = params[0][0]
+t = params[0][1]
 newline = 'temperature	{0:.3f}\n'.format(float(T))
-newline2 = 'steps  {0:10d}\n'.format(params[T])
+newline2 = 'steps  {0:10d}\n'.format(t)
 lnum = 1
 for line in fileinput.FileInput("CONTROL",inplace=1):
 	if lnum == 3:
@@ -58,7 +60,7 @@ while j < N:
 		
 	# Move output files to other directory
 
-	path_dst = '/home/anastasia/MD_data/{}/{}{}'.format(cycle_name, params.keys()[j], 'K/')
+	path_dst = '/home/anastasia/MD_data/{}/{}{}'.format(cycle_name, params[j][0], 'K/')
 	os.makedirs(path_dst)
 	output_files = os.listdir(path_work)
 	for file_name in output_files:
@@ -93,9 +95,10 @@ while j < N:
 
 	# Change TEMPERATURE and TIME in CONTROL
 	if j + 1 < N:
-		T = params.keys()[j + 1]
+		T = params[j + 1][0]
+		t = params[j + 1][1]
 		newline = 'temperature	{0:.3f}\n'.format(float(T))
-		newline2 = 'steps  {0:10d}\n'.format(params[T])
+		newline2 = 'steps  {0:10d}\n'.format(t)
 		lnum = 1
 		for line in fileinput.FileInput("CONTROL",inplace=1):
 			if lnum == 3:
